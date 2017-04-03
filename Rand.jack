@@ -1,0 +1,38 @@
+class Rand{
+	
+	
+	function int seed(int init){
+		var int a,c,number,n1,seed;
+		if (init<0) {let seed = Math.abs(init);}
+		else {let seed=init;}
+		let a= 51;
+		let c=141;
+		let number=600;
+		let n1=a*seed+c;
+		
+		if (n1<0) {let n1= Math.abs(n1);}
+		let n1=n1-((n1/number)*number);
+		
+		return n1;
+	}
+	function int generate(int n){
+		var int a,c,number,n1;
+		var int n2;
+		let a= 51;
+		let c=141;
+		let number=600;
+		let n2=a*n+c;
+		
+		let n2=n2-((n2/number)*number);
+
+		return n2;
+	}
+	function int zeroToSix(int n){
+		var int selection;
+		let selection = n -((n/7)*7);
+
+		return selection;
+	}
+	
+	
+}

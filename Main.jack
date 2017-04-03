@@ -1,0 +1,10 @@
+class Main{
+	function void main(){
+	var gameGrid game;    	
+	let game=gameGrid.new(16,24);
+
+	do game.run();
+
+	return;
+	}
+}

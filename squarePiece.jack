@@ -1,0 +1,184 @@
+class squarePiece{
+	
+	field int beginX;
+	field int beginY;
+	field gameGrid currentGrid;
+	field Array arr;
+	constructor squarePiece new(gameGrid grid){
+		let currentGrid=grid;
+		
+		let beginX=Math.divide(currentGrid.getRow(),2);
+		
+		let beginY=0;
+		
+		return this;
+	}
+	method void draw(){
+		do currentGrid.turnOnGrid(beginX,beginY);
+		do currentGrid.turnOnGrid(beginX+1,beginY);
+		do currentGrid.turnOnGrid(beginX,beginY+1);
+		do currentGrid.turnOnGrid(beginX+1,beginY+1);
+		return;
+	}
+	method void erase(){
+		do currentGrid.turnOffGrid(beginX,beginY);
+		do currentGrid.turnOffGrid(beginX+1,beginY);
+		do currentGrid.turnOffGrid(beginX,beginY+1);
+		do currentGrid.turnOffGrid(beginX+1,beginY+1);
+		return;
+	}	
+
+	method boolean moveDown(){
+		
+		if ((beginY<(currentGrid.getCol()-2))&(beginY<(topOccupy()-2))){
+		
+		do erase();
+		let beginY=beginY+1;
+		do draw();
+		return false;
+		}
+		else {
+		do updateGrid();
+				
+		do dispose();
+		return true;
+		}
+	}
+	method void moveLeft(){
+
+		if ((beginX>0)&(beginX>(leftOccupy()+1))) {
+
+
+		do erase();
+		let beginX=beginX-1;
+		do draw();
+		}
+		return;
+	}
+	method void moveRight(){
+
+		if ((beginX<(currentGrid.getRow()-2))&(beginX<(rightOccupy()-2))) {
+		do erase();
+		let beginX=beginX+1;
+		do draw();
+		}
+		return;
+	}
+	method void updateGrid(){
+		
+		do currentGrid.setGrid(beginX,beginY,true);
+		do currentGrid.setGrid(beginX+1,beginY,true);
+		do currentGrid.setGrid(beginX,beginY+1,true);
+		do currentGrid.setGrid(beginX+1,beginY+1,true);
+
+		return;
+
+	}
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+		
+	method void run(){
+		var int time;
+		var boolean reachBottom;
+		var char key;
+
+		let time=0;
+		let reachBottom=false;
+
+		while (~reachBottom){
+		do Sys.wait(200);
+		let key=Keyboard.keyPressed();
+		let time=time+200; 
+		if (time-(Math.divide(time,400)*400)=0){
+			
+			let reachBottom=moveDown();
+		} else {
+			if (key=133){
+			let reachBottom=moveDown();
+
+			}	
+		}
+
+		if (key=130){
+			do moveLeft();
+
+		}
+		if (key=132){
+			do moveRight();
+
+		}
+			
+		
+		}
+		return;
+	}
+	
+	method int topOccupy(){
+		var int j;
+		var int gridIndex;
+		
+		let j = beginY+2;
+		let arr = currentGrid.getArray();
+		while (j<(currentGrid.getCol())){
+			
+			let gridIndex=Math.multiply(j,currentGrid.getRow())+beginX;
+			
+			if ((arr[gridIndex]=true)|(arr[gridIndex+1]=true))  
+			{	
+				return j;
+			} else {
+				let j = j+1;
+			}
+		
+		}  return j;
+		
+	}
+	method int leftOccupy(){
+		var int i;
+		var int gridIndex1;
+		var int gridIndex2;
+		let arr = currentGrid.getArray();
+		let i = beginX-1;
+		while (i>-1){
+			
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+i;
+			let gridIndex2=Math.multiply((beginY+1),currentGrid.getRow())+i;
+
+			if ((arr[gridIndex1]=true)|(arr[gridIndex2]=true))  
+			{	
+				return i;
+			} else {
+				let i = i-1;
+			}
+		
+		}  return i;
+		
+		
+	}
+
+		method int rightOccupy(){
+		var int i;
+		var int gridIndex1;
+		var int gridIndex2;
+		let arr = currentGrid.getArray();
+		let i = beginX+2;
+		while (i<(currentGrid.getRow())){
+			
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+i;
+			let gridIndex2=Math.multiply((beginY+1),currentGrid.getRow())+i;
+
+			if ((arr[gridIndex1]=true)|(arr[gridIndex2]=true))  
+			{	
+				return i;
+			} else {
+				let i = i+1;
+			}
+		
+		}  return i;
+		
+		
+	}
+ 
+}

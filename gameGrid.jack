@@ -1,0 +1,225 @@
+class gameGrid{
+	field int gSize;
+	
+	/*gRow is the number of rows; gCol is the number of column of the game grid*/
+	field int gRow;    
+	field int gCol;
+	field int score;
+	field Array grid;
+	field int arrayLength,n0;
+	field squarePiece sq;
+	field teePiece tee;
+	field leftZeePiece lZee;
+	field rightZeePiece rZee;
+	field leftEllPiece lEll;
+	field rightEllPiece rEll;
+	field longPiece long;
+	field squarePiece square;
+	constructor gameGrid new(int row, int col){
+			
+		var int deltX;
+		var int deltY;	
+		var int i,time;
+		var char key;
+		let gSize=8;
+		let gRow=row;
+		let gCol=col;
+		
+		let deltX=Math.multiply(gRow,gSize)+Math.multiply(gRow+1,2);
+		let deltY=Math.multiply(gCol,gSize)+Math.multiply(gCol+1,2);
+		let arrayLength = Math.multiply(gCol,gRow);
+		
+
+		let grid = Array.new(arrayLength); 
+		let score=0;
+		do Output.printString("Please press any key to generate random seed");
+		do Output.println();
+		while (key=0){
+			let key = Keyboard.keyPressed();
+			let time=time+1;
+		}
+		let n0 = Rand.seed(time);
+		do Screen.clearScreen();
+
+		do Screen.drawLine(156,0,156+deltX,0);
+		do Screen.drawLine(156+deltX,0,156+deltX,0+deltY);
+		do Screen.drawLine(156+deltX,0+deltY,156,0+deltY);
+		do Screen.drawLine(156,0+deltY,156,0);
+
+		do Output.moveCursor(2,2);
+		do Output.printString("SCORE:");
+		do Output.printInt(score);
+		
+		let i=0;
+		while (i<arrayLength){
+				let grid[i]=false;
+				let i=i+1;
+			}
+		return this;
+	}
+	method int getRow(){
+		return gRow;
+	}
+	method int getCol(){
+		return gCol;
+	}
+	method void turnOnGrid(int x, int y){
+		var int recStartX;
+		var int recStartY;
+		if ((x<gRow)&(~(x<0))&(y<gCol)&(~(y<0))){
+		
+		let recStartX=156+Math.multiply(x+1,2)+Math.multiply(x, gSize);
+		let recStartY=0+Math.multiply(y+1,2)+Math.multiply(y, gSize);
+		do Screen.setColor(true);
+		do Screen.drawRectangle(recStartX,recStartY, recStartX+ gSize, recStartY+ 		gSize);}
+		return;
+	}
+	method void turnOffGrid(int x, int y){
+		var int recStartX;
+		var int recStartY;
+		let recStartX=156+Math.multiply(x+1,2)+Math.multiply(x, gSize);
+		let recStartY=0+Math.multiply(y+1,2)+Math.multiply(y, gSize);
+		do Screen.setColor(false);
+		do Screen.drawRectangle(recStartX,recStartY, recStartX+ gSize, recStartY+ 		gSize);
+		return;
+	}
+	method void printCurrentGrid(){
+		var int xIndex,yIndex;
+		var int i;
+		var int recStartX;
+		var int recStartY;
+		let i=0;
+		while (i<arrayLength){
+				
+				let yIndex=Math.divide(i, gRow);
+				let xIndex=i - Math.multiply(yIndex, gRow);
+				let recStartX=156+Math.multiply(xIndex+1,2)+Math.multiply(xIndex,gSize);
+				let recStartY=0+Math.multiply(yIndex+1,2)+Math.multiply(yIndex,gSize);
+				if (grid[i]=true){
+					do Screen.setColor(true);
+					do Screen.drawRectangle(recStartX,recStartY, recStartX+ gSize, recStartY+gSize);
+				}
+				if (grid[i]=false){
+					do Screen.setColor(false);
+					do Screen.drawRectangle(recStartX,recStartY, recStartX+ gSize, recStartY+gSize);
+				}
+				let i=i+1;
+			}
+		return;
+	}
+	method void setGrid(int x, int y, boolean b){
+		var int gridIndex;
+		let gridIndex= Math.multiply(y,gRow)+x;
+		let grid[gridIndex]=b;
+		
+		return;
+	}
+	method void run(){
+		var boolean exit;
+		var int rowIndex;
+		var boolean remRow;
+		var int time,seed,n,select;
+		var char key;
+		var int rowsRemoved;
+		let exit = false;
+		let n=n0;
+		
+		while (~exit){
+			
+			
+			let rowsRemoved = 0;
+			let n= Rand.generate(n);
+			let select = Rand.zeroToSix(n);
+			let remRow=false;
+			let rowIndex=gCol-1;
+			if (select=0){
+				let lZee=leftZeePiece.new(this);
+				do lZee.run();
+			}
+			if (select=1){
+				let rZee=rightZeePiece.new(this);
+				do rZee.run();
+			}
+			if (select=2){
+				let lEll=leftEllPiece.new(this);
+				do lEll.run();
+			}
+			if (select=3){
+				let rEll= rightEllPiece.new(this);
+				do rEll.run();
+			}
+			if (select=4){
+				let tee=teePiece.new(this);
+				do tee.run();
+			}
+			if (select=5){
+				let long= longPiece.new(this);
+				do long.run();
+			}
+			if (select=6){
+				let square = squarePiece.new(this);
+				do square.run();
+			}	
+
+			while (rowIndex >0) {
+				
+				if (isFullRow(rowIndex)) {
+					do removeFullRow(rowIndex);
+					let rowIndex = rowIndex+1;
+					let remRow=true;
+					let rowsRemoved = rowsRemoved+1;
+				}
+				let rowIndex = rowIndex-1;
+			}
+			if (remRow) {
+				do printCurrentGrid(); 
+				let score = score+rowsRemoved;
+				do Output.moveCursor(2,2);
+				do Output.printString("SCORE:");
+				do Output.printInt(score);
+				let rowsRemoved=0;
+			}
+			
+			
+		}
+		
+		return;
+	}
+	method Array getArray(){
+		return grid;
+	}
+	method boolean isFullRow(int rowIndex){
+		var int i;
+		var int gridIndex;
+		
+		let i = 0;
+		while (i<gRow)  {
+			let gridIndex= Math.multiply(rowIndex,gRow)+i;
+			if (grid[gridIndex]=false){
+				return false;
+			}
+			let i = i+1;
+		}
+		
+		return true;
+	}
+	method void removeFullRow(int rowIndex) {
+		var int colIndex;
+		var int i ;
+		var int j;
+		var int gridIndex;
+		let i = rowIndex;
+		while (i>0){
+			let j = 0;
+			while (j<gRow){
+				let gridIndex= Math.multiply((i-1),gRow)+j;
+				do setGrid(j, i, grid[gridIndex]);
+				let j = j+1;
+			}
+			let i = i-1;
+		}
+		return;
+	}
+
+
+}

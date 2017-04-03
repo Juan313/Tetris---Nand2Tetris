@@ -1,0 +1,475 @@
+class leftEllPiece{
+	
+	field int beginX;
+	field int beginY;
+	field gameGrid currentGrid;
+	field Array arr;
+	field int orientation;
+	
+	constructor leftEllPiece new(gameGrid grid){
+		let currentGrid=grid;
+		
+		let beginX=Math.divide(currentGrid.getRow(),2);
+		
+		let beginY=1;
+		let orientation = 0;
+
+		return this;
+
+	}
+	method void draw(int orientation){
+		if (orientation=0) {
+			
+			do currentGrid.turnOnGrid(beginX,beginY);
+			do currentGrid.turnOnGrid(beginX,beginY-1);
+			do currentGrid.turnOnGrid(beginX,beginY+1);
+			do currentGrid.turnOnGrid(beginX+1,beginY+1);
+			return;
+		}
+		if (orientation=1) {
+			if (beginX= 0) {let beginX=1;}
+			if (beginX= (currentGrid.getRow()-1)) {let beginX=(currentGrid.getRow()-2);}
+			do currentGrid.turnOnGrid(beginX,beginY);
+			do currentGrid.turnOnGrid(beginX-1,beginY);
+			do currentGrid.turnOnGrid(beginX+1,beginY);
+			do currentGrid.turnOnGrid(beginX+1,beginY-1);
+			return;
+		}
+		if (orientation=2) {
+			if (beginX= 0) {let beginX=1;}
+			
+			do currentGrid.turnOnGrid(beginX,beginY);
+			do currentGrid.turnOnGrid(beginX,beginY-1);
+			do currentGrid.turnOnGrid(beginX-1,beginY-1);
+			do currentGrid.turnOnGrid(beginX,beginY+1);
+			return;
+		}
+		if (orientation=3) {
+			if (beginX= 0) {let beginX=1;}
+			if (beginX= (currentGrid.getRow()-1)) {let beginX=(currentGrid.getRow()-2);}
+			do currentGrid.turnOnGrid(beginX,beginY);
+			do currentGrid.turnOnGrid(beginX-1,beginY);
+			do currentGrid.turnOnGrid(beginX+1,beginY);
+			do currentGrid.turnOnGrid(beginX-1,beginY+1);
+			return;
+		}
+		return;
+		
+	}
+	method void erase(int orientation){
+		if (orientation=0) {
+			
+			do currentGrid.turnOffGrid(beginX,beginY);
+			do currentGrid.turnOffGrid(beginX,beginY-1);
+			do currentGrid.turnOffGrid(beginX,beginY+1);
+			do currentGrid.turnOffGrid(beginX+1,beginY+1);
+			return;
+		}
+		if (orientation=1) {
+			
+			do currentGrid.turnOffGrid(beginX,beginY);
+			do currentGrid.turnOffGrid(beginX-1,beginY);
+			do currentGrid.turnOffGrid(beginX+1,beginY);
+			do currentGrid.turnOffGrid(beginX+1,beginY-1);
+			return;
+		}
+		if (orientation=2) {
+			
+			do currentGrid.turnOffGrid(beginX,beginY);
+			do currentGrid.turnOffGrid(beginX,beginY-1);
+			do currentGrid.turnOffGrid(beginX-1,beginY-1);
+			do currentGrid.turnOffGrid(beginX,beginY+1);
+			return;
+		}
+		if (orientation=3) {
+			
+			do currentGrid.turnOffGrid(beginX,beginY);
+			do currentGrid.turnOffGrid(beginX-1,beginY);
+			do currentGrid.turnOffGrid(beginX+1,beginY);
+			do currentGrid.turnOffGrid(beginX-1,beginY+1);
+			return;
+		}
+		
+		return;
+	}	
+
+	method boolean moveDown(){
+		var int gridIndex1;
+		var int gridIndex2;
+		var int gridIndex3;
+		let arr = currentGrid.getArray();
+		
+		if (orientation = 0) {
+		if (beginY<(currentGrid.getCol()-2)){
+			let gridIndex1=Math.multiply(beginY+2,currentGrid.getRow())+beginX;
+			let gridIndex2=Math.multiply(beginY+2,currentGrid.getRow())+beginX+1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				
+				do erase(orientation);
+				let beginY=beginY+1;
+				do draw(orientation);
+				return false;
+			} 
+			else {
+			
+				do updateGrid(orientation);
+			
+				do dispose();
+				return true;
+			}
+			
+		}
+		else {
+			
+			do updateGrid(orientation);
+			
+			do dispose();
+			return true;
+		}
+		}
+		
+		if (orientation = 1) {
+		if (beginY<(currentGrid.getCol()-1)){
+			let gridIndex1=Math.multiply(beginY+1,currentGrid.getRow())+beginX-1;
+			let gridIndex2=Math.multiply(beginY+1,currentGrid.getRow())+beginX;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX+1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				do erase(orientation);
+				let beginY=beginY+1;
+				do draw(orientation);
+				return false;
+			} 
+			else {
+			
+				do updateGrid(orientation);
+			
+				do dispose();
+				return true;
+			}
+		}
+		else {	
+			do updateGrid(orientation);
+			
+			do dispose();
+			return true;
+		}
+		}
+		
+		if (orientation = 2) {
+		if (beginY<(currentGrid.getCol()-2)){
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+beginX-1;
+			let gridIndex2=Math.multiply(beginY+2,currentGrid.getRow())+beginX;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				
+				do erase(orientation);
+				let beginY=beginY+1;
+				do draw(orientation);
+				return false;
+			} 
+			else {
+			
+				do updateGrid(orientation);
+			
+				do dispose();
+				return true;
+			}
+			
+		}
+		else {
+			
+			do updateGrid(orientation);
+			
+			do dispose();
+			return true;
+		}
+		}
+		
+
+		if (orientation = 3) {
+		if (beginY<(currentGrid.getCol()-2)){
+			let gridIndex1=Math.multiply(beginY+2,currentGrid.getRow())+beginX-1;
+			let gridIndex2=Math.multiply(beginY+1,currentGrid.getRow())+beginX;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX+1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				do erase(orientation);
+				let beginY=beginY+1;
+				do draw(orientation);
+				return false;
+			} 
+			else {
+			
+				do updateGrid(orientation);
+			
+				do dispose();
+				return true;
+			}
+		}
+		else {	
+			do updateGrid(orientation);
+			
+			do dispose();
+			return true;
+		}
+		}
+
+		
+		return true;
+		
+
+
+
+
+	}
+	method void moveLeft(){
+		
+		var int gridIndex1;
+		var int gridIndex2;
+		var int gridIndex3;
+		let arr = currentGrid.getArray();
+		
+		if (orientation = 0) {
+		if (beginX>0){
+			let gridIndex1=Math.multiply(beginY-1,currentGrid.getRow())+beginX-1;
+			let gridIndex2=Math.multiply(beginY,currentGrid.getRow())+beginX-1;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX-1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				
+				do erase(orientation);
+				let beginX=beginX-1;
+				do draw(orientation);
+				return;
+			} 
+			
+			
+		}
+		
+		}
+		
+		if (orientation = 1) {
+		if (beginX>1){
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+beginX-2;
+			let gridIndex2=Math.multiply(beginY-1,currentGrid.getRow())+beginX;
+			
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				do erase(orientation);
+				let beginX=beginX-1;
+				do draw(orientation);
+				return;
+			} 
+			
+		}
+		
+		}
+		
+		if (orientation = 2) {
+		if (beginX>1){
+			let gridIndex1=Math.multiply(beginY-1,currentGrid.getRow())+beginX-2;
+			let gridIndex2=Math.multiply(beginY,currentGrid.getRow())+beginX-1;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX-1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				
+				do erase(orientation);
+				let beginX=beginX-1;
+				do draw(orientation);
+				return;
+			} 
+			
+			
+		}
+		
+		}
+		if (orientation = 3) {
+		if (beginX>1){
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+beginX-2;
+			let gridIndex2=Math.multiply(beginY+1,currentGrid.getRow())+beginX-2;
+			
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				do erase(orientation);
+				let beginX=beginX-1;
+				do draw(orientation);
+				return;
+			} 
+			
+		}
+		
+		}
+		return;
+	}
+	method void moveRight(){
+		
+		var int gridIndex1;
+		var int gridIndex2;
+		var int gridIndex3;
+		let arr = currentGrid.getArray();
+		
+		if (orientation = 0) {
+		if (beginX<(currentGrid.getRow()-2)){
+			let gridIndex1=Math.multiply(beginY-1,currentGrid.getRow())+beginX+1;
+			let gridIndex2=Math.multiply(beginY,currentGrid.getRow())+beginX+1;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX+2;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				
+				do erase(orientation);
+				let beginX=beginX+1;
+				do draw(orientation);
+				return;
+			} 
+			
+			
+		}
+		
+		}
+		
+		if (orientation = 1) {
+		if (beginX<(currentGrid.getRow()-2)){
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+beginX+2;
+			let gridIndex2=Math.multiply(beginY-1,currentGrid.getRow())+beginX+2;
+			
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				do erase(orientation);
+				let beginX=beginX+1;
+				do draw(orientation);
+				return;
+			} 
+			
+		}
+		
+		}
+		if (orientation = 2) {
+		if (beginX<(currentGrid.getRow()-1)){
+			let gridIndex1=Math.multiply(beginY-1,currentGrid.getRow())+beginX+1;
+			let gridIndex2=Math.multiply(beginY,currentGrid.getRow())+beginX+1;
+			let gridIndex3=Math.multiply(beginY+1,currentGrid.getRow())+beginX+1;
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false)&(arr[gridIndex3]=false))  {
+				
+				do erase(orientation);
+				let beginX=beginX+1;
+				do draw(orientation);
+				return;
+			} 
+			
+			
+		}
+		
+		}
+		if (orientation = 3) {
+		if (beginX<(currentGrid.getRow()-2)){
+			let gridIndex1=Math.multiply(beginY,currentGrid.getRow())+beginX+2;
+			let gridIndex2=Math.multiply(beginY+1,currentGrid.getRow())+beginX;
+			
+			if ((arr[gridIndex1]=false)&(arr[gridIndex2]=false))  {
+				do erase(orientation);
+				let beginX=beginX+1;
+				do draw(orientation);
+				return;
+			} 
+			
+		}
+		
+		}
+
+		return;
+	}
+	method void updateGrid(int orientation){
+		
+		
+		if (orientation=0) {
+			
+			do currentGrid.setGrid(beginX,beginY,true);
+			do currentGrid.setGrid(beginX,beginY-1,true);
+			do currentGrid.setGrid(beginX,beginY+1,true);
+			do currentGrid.setGrid(beginX+1,beginY+1,true);
+			return;
+		}
+		if (orientation=1) {
+			do currentGrid.setGrid(beginX,beginY,true);
+			do currentGrid.setGrid(beginX-1,beginY,true);
+			do currentGrid.setGrid(beginX+1,beginY-1,true);
+			do currentGrid.setGrid(beginX+1,beginY,true);
+			return;
+		}
+		if (orientation=2) {
+			
+			do currentGrid.setGrid(beginX,beginY,true);
+			do currentGrid.setGrid(beginX,beginY-1,true);
+			do currentGrid.setGrid(beginX-1,beginY-1,true);
+			do currentGrid.setGrid(beginX,beginY+1,true);
+			return;
+		}
+		if (orientation=3) {
+			do currentGrid.setGrid(beginX,beginY,true);
+			do currentGrid.setGrid(beginX-1,beginY,true);
+			do currentGrid.setGrid(beginX+1,beginY,true);
+			do currentGrid.setGrid(beginX-1,beginY+1,true);
+			return;
+		}
+		
+		return;
+
+	}
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+		
+	method void run(){
+		var int time;
+		var boolean reachBottom;
+		var char key;
+
+		let time=0;
+		let reachBottom=false;
+
+		while (~reachBottom){
+		do Sys.wait(100);
+		let key=Keyboard.keyPressed();
+		let time=time+100; 
+		if (time-(Math.divide(time,800)*800)=0){
+			
+			let reachBottom=moveDown();
+		} else {
+			if (key=133){
+			let reachBottom=moveDown();
+
+			}	
+		}
+		if (~(reachBottom)){
+		if (key=130){
+			do moveLeft();
+
+		}
+		if (key=132){
+			do moveRight();
+
+		}
+		if (key=32){
+			do Sys.wait(100);			
+			let time=time+100; 
+			if (orientation<3) { 
+				do erase(orientation);
+				let orientation = orientation+1;
+				do draw(orientation);
+				
+			}
+			else {
+			do erase(orientation);
+			let orientation = 0;
+			do draw(orientation);
+			}
+			
+			
+		}}
+			
+		
+		}
+		
+
+		// output
+		return;
+	}
+	
+		
+
+		
+ 
+}
